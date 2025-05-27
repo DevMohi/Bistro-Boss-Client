@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import loginIllustration from "../../assets/others/authentication1.png";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
@@ -10,19 +10,25 @@ const SignUp = () => {
     register,
     handleSubmit,
     formState: { errors },
-    // reset,
+    reset,
   } = useForm();
 
-  const { createUser } = useContext(AuthContext);
+  const { createUser, updateUserProfile } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const onSubmit = (data) => {
     console.log(data);
     createUser(data.email, data.password).then((res) => {
       const loggedUser = res.user;
       console.log(loggedUser);
-      // Swal.fire({
-      //   ttile : 'Logged In Successfully',
-      // })
+      updateUserProfile(data.name, data.photoURL).then(() => {
+        console.log("User profile updated successfully");
+        reset();
+        //use toaster 
+        alert("User created successfully");
+        navigate("/");
+      });
+
     });
   };
 
@@ -61,6 +67,31 @@ const SignUp = () => {
                   className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-yellow-500 focus:border-yellow-500"
                 />
                 {errors.name && (
+                  <span className="text-red-600 text-sm">
+                    {errors.name.message}
+                  </span>
+                )}
+              </div>
+
+              {/* Photo URL */}
+              <div>
+                <label
+                  htmlFor="Photo URL"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Photo URL
+                </label>
+                <input
+                  {...register("photoURL", {
+                    required: "Photo URL is required",
+                  })}
+                  id="photoURL"
+                  name="photoURL"
+                  type="text"
+                  placeholder="Type here"
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-yellow-500 focus:border-yellow-500"
+                />
+                {errors.photoURL && (
                   <span className="text-red-600 text-sm">
                     {errors.name.message}
                   </span>
