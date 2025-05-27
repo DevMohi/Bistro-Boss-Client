@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaFacebookF, FaGoogle, FaGithub } from "react-icons/fa";
 import loginIllustration from "../../assets/others/authentication1.png";
 import {
@@ -7,13 +7,16 @@ import {
   validateCaptcha,
 } from "react-simple-captcha";
 import { AuthContext } from "../../providers/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
 
 export default function Login() {
   const [disabled, setDisabled] = useState(true);
   const { signIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   useEffect(() => {
     loadCaptchaEnginge(6);
@@ -28,6 +31,16 @@ export default function Login() {
     signIn(email, password).then((res) => {
       const user = res.user;
       console.log(user);
+      Swal.fire({
+        title: "Logged in successfully",
+        showClass: {
+          popup: "animate__animated animate__fadeInDown",
+        },
+        hideClass: {
+          popup: "animate__animated animate__fadeOutUp",
+        },
+      });
+      navigate(from, { replace: true });
     });
   };
 
