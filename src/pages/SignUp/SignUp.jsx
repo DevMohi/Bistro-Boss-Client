@@ -4,6 +4,9 @@ import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
+import Swal from "sweetalert2";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import SocialLogin from "../Shared/SocialLogin/SocialLogin";
 
 const SignUp = () => {
   const {
@@ -12,23 +15,36 @@ const SignUp = () => {
     formState: { errors },
     reset,
   } = useForm();
+  const axiosPublic = useAxiosPublic();
 
   const { createUser, updateUserProfile } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    console.log(data);
     createUser(data.email, data.password).then((res) => {
       const loggedUser = res.user;
       console.log(loggedUser);
       updateUserProfile(data.name, data.photoURL).then(() => {
-        console.log("User profile updated successfully");
-        reset();
-        //use toaster 
-        alert("User created successfully");
-        navigate("/");
+        const userInfo = {
+          name: data.name,
+          email: data.email,
+          photoURL: data.photoURL,
+        };
+        axiosPublic.post("/users", userInfo).then((res) => {
+          if (res.data.insertedId) {
+            console.log("user added to db");
+            reset();
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "User created successfully",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            navigate("/");
+          }
+        });
       });
-
     });
   };
 
@@ -180,6 +196,7 @@ const SignUp = () => {
               <Link to="/login" className="text-yellow-600 hover:underline">
                 Login
               </Link>
+              <SocialLogin />
             </p>
           </div>
 

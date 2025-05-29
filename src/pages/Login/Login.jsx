@@ -10,6 +10,7 @@ import { AuthContext } from "../../providers/AuthProvider";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
+import SocialLogin from "../Shared/SocialLogin/SocialLogin";
 
 export default function Login() {
   const [disabled, setDisabled] = useState(true);
@@ -148,6 +149,7 @@ export default function Login() {
               <Link to="/signup" className="text-yellow-600 hover:underline">
                 Create a New Account
               </Link>
+              <SocialLogin />
             </p>
           </div>
         </div>
