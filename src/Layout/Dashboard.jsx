@@ -1,4 +1,3 @@
-import React from "react";
 import {
   FaHome,
   FaCalendar,
@@ -13,10 +12,11 @@ import {
   FaUsers,
 } from "react-icons/fa";
 import { NavLink, Outlet } from "react-router-dom";
+import useAdmin from "../hooks/useAdmin";
 
 const Dashboard = () => {
   // Toggle this based on user role
-  const isAdmin = true;
+  const [isAdmin] = useAdmin();
 
   //Navigation for users
   const userNav = [
