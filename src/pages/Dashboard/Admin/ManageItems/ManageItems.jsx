@@ -1,9 +1,11 @@
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import SectionTitle from "../../../../../components/SectionTitle/SectionTitle";
-import { useMenu } from "../../../../../hooks/useMenu";
+
 import Swal from "sweetalert2";
-import useAxiosSecure from "../../../../../hooks/useAxiosSecure";
+
 import { Link } from "react-router-dom";
+import useAxiosSecure from "../../../../hooks/useAxiosSecure";
+import { useMenu } from "../../../../hooks/useMenu";
+import SectionTitle from "../../../../components/SectionTitle/SectionTitle";
 
 const ManageItems = () => {
   const [menu, , refetch] = useMenu();

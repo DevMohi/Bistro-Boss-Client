@@ -9,11 +9,13 @@ import PrivateRoute from "./PrivateRoute";
 import Secret from "../pages/Shared/Secret";
 import Dashboard from "../Layout/Dashboard";
 import Cart from "../pages/Dashboard/Cart/Cart";
-import AllUsers from "../pages/Dashboard/Cart/Admin/AllUsers/AllUsers";
-import AddItems from "../pages/Dashboard/Cart/Admin/AddItems/AddItems";
+
 import AdminRoute from "./AdminRoute";
-import ManageItems from "../pages/Dashboard/Cart/Admin/ManageItems/ManageItems";
-import UpdateItem from "../pages/Dashboard/Cart/Admin/UpdateItem/UpdateItem";
+import AddItems from "../pages/Dashboard/Admin/AddItems/AddItems";
+import AllUsers from "../pages/Dashboard/Admin/AllUsers/AllUsers";
+import UpdateItem from "../pages/Dashboard/Admin/UpdateItem/UpdateItem";
+import ManageItems from "../pages/Dashboard/Admin/ManageItems/ManageItems";
+import Payment from "../pages/Dashboard/Payment/Payment";
 
 export const router = createBrowserRouter([
   {
@@ -64,6 +66,10 @@ export const router = createBrowserRouter([
         path: "cart",
         element: <Cart />,
       },
+      {
+        path: "payment",
+        element: <Payment />,
+      },
 
       //admin only routes
 
@@ -98,7 +104,8 @@ export const router = createBrowserRouter([
             <UpdateItem />
           </AdminRoute>
         ),
-        loader: ({ params }) => fetch(`http://localhost:5000/menu/${params.id}`),
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/menu/${params.id}`),
       },
     ],
   },
