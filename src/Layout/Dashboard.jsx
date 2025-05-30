@@ -13,10 +13,12 @@ import {
 } from "react-icons/fa";
 import { NavLink, Outlet } from "react-router-dom";
 import useAdmin from "../hooks/useAdmin";
+import useCart from "../hooks/useCart";
 
 const Dashboard = () => {
   // Toggle this based on user role
   const [isAdmin] = useAdmin();
+  const [cart] = useCart();
 
   //Navigation for users
   const userNav = [
@@ -27,7 +29,7 @@ const Dashboard = () => {
       icon: <FaMoneyCheckAlt />,
       label: "Payment History",
     },
-    { to: "cart", icon: <FaShoppingCart />, label: "My Cart" },
+    { to: "cart", icon: <FaShoppingCart />, label: `My Cart (${cart.length})` },
     { to: "review", icon: <FaStar />, label: "Add Review" },
     { to: "bookings", icon: <FaCalendarCheck />, label: "My Bookings" },
   ];
