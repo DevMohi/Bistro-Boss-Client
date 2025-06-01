@@ -13,7 +13,6 @@ import { app } from "../firebase/firebase.config";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 
 export const AuthContext = createContext(null);
-
 const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
@@ -52,24 +51,34 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+
       if (currentUser) {
-        // get token and store client
         const userInfo = { email: currentUser.email };
-        axiosPublic.post("/jwt", userInfo).then((res) => {
-          if (res.data.token) {
-            localStorage.setItem("access-token", res.data.token);
+
+        axiosPublic
+          .post("/jwt", userInfo)
+          .then((res) => {
+            if (res.data.token) {
+              localStorage.setItem("access-token", res.data.token);
+            } else {
+              console.warn("JWT endpoint returned no token:", res.data);
+              localStorage.removeItem("access-token");
+            }
+          })
+          .catch((err) => {
+            console.error("Error fetching JWT:", err);
+            localStorage.removeItem("access-token");
+          })
+          .finally(() => {
             setLoading(false);
-          }
-        });
+          });
       } else {
-        // TODO: remove token (if token stored in the client side: Local storage, caching, in memory)
         localStorage.removeItem("access-token");
         setLoading(false);
       }
     });
-    return () => {
-      return unsubscribe();
-    };
+
+    return () => unsubscribe();
   }, [axiosPublic]);
 
   const authInfo = {

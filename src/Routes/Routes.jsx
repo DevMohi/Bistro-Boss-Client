@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Main from "../Layout/Main";
 import Home from "../pages/Home/Home/Home";
 import Menu from "../pages/Menu/Menu";
@@ -45,18 +45,10 @@ export const router = createBrowserRouter([
         path: "signup",
         element: <SignUp />,
       },
-      {
-        path: "secret",
-        element: (
-          <PrivateRoute>
-            <Secret></Secret>
-          </PrivateRoute>
-        ),
-      },
     ],
   },
 
-  //For another layout e,g - Dashboard
+  // //For another layout e,g - Dashboard
   {
     path: "/dashboard",
     element: (
@@ -124,7 +116,9 @@ export const router = createBrowserRouter([
           </AdminRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/menu/${params.id}`),
+          fetch(
+            `https://bistro-boss-server-umber-ten.vercel.app/menu/${params.id}`
+          ),
       },
     ],
   },
